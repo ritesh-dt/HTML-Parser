@@ -4,7 +4,6 @@
 
 using namespace std;
 
-#include "Stack.cpp"
 #include "Node.cpp"
 #include "HashTable.cpp"
 
@@ -26,9 +25,9 @@ void indentOutput(int);
 void displayMenu(string*, HashTable*);
 
 int main() {
-    string file;
-    HashTable adjList = HashTable(151);
-    displayMenu(&file, &adjList);
+    // string file;
+    // HashTable adjList = HashTable(151);
+    // displayMenu(&file, &adjList);
 
     // parseHtml("example.html", &adjList);
     // cout << "--- Tree ---\n";
@@ -46,7 +45,6 @@ void parseHtml(string file_name, HashTable* adjList) {
 
     trimWhiteSpace(html);
 
-    // Stack* elementStack = createStack();
     list<Node> elementStack;
 
     // *adjList = HashTable(151);
@@ -134,19 +132,6 @@ int getTag(ifstream& fin, int nextId, list<Node> *stack, HashTable hash) {
     fin.get();  trimWhiteSpace(fin);
 
     Node newNode = createNode(nextId, 1, token, attrs, attr_count);
-    // Node* newNode = createNode(nextId, 1, token, attrs, attr_count);
-    
-    // hash.insertItem(nextId, *newNode);
-    // if (!isEmpty(stack)) {
-    //     Node parent = peekStack(stack);
-    //     hash.insertItem(nextId, parent);
-    //     hash.insertItem(parent.id, *newNode);
-    // } else {
-    //     hash.insertItem(nextId, *newNode);
-    // }
-    // newNode->print();
-    // if (!isSingleElement(token))
-    //     pushStack(stack, *newNode);
 
     hash.insertItem(nextId, newNode);
     if (stack->size() > 0) {
@@ -169,17 +154,6 @@ void getText(ifstream& fin, int nextId, list<Node>* stack, HashTable hash) {
     string text = getTokenTill(fin, "<");
     string attrs[0];
 
-    // Node* newNode = createNode(nextId, 0, text, attrs, 0);
-
-    // hash.insertItem(nextId, *newNode);
-    // if (!isEmpty(stack)) {
-    //     Node parent = peekStack(stack);
-    //     hash.insertItem(nextId, parent);
-    //     hash.insertItem(parent.id, *newNode);
-    //     // cout << peekStack(stack).name << " -> ";
-    // }
-    // newNode->print();
-
     Node newNode = createNode(nextId, 0, text, attrs, 0);
 
     hash.insertItem(nextId, newNode);
@@ -187,19 +161,14 @@ void getText(ifstream& fin, int nextId, list<Node>* stack, HashTable hash) {
         Node parent = stack->back();
         hash.insertItem(nextId, parent);
         hash.insertItem(parent.id, newNode);
-        // cout << peekStack(stack).name << " -> ";
     } else {
         hash.insertItem(nextId, newNode);
         hash.insertItem(0, newNode);
     }
-    // newNode.print();
-
     return;
 }
 
 void printTree(HashTable hash, int count) {
-
-    // Stack* dfsStack = createStack();
     list<Node> dfsStack;
     list<int> levelStack;
     
@@ -210,12 +179,9 @@ void printTree(HashTable hash, int count) {
         dfsStack.push_front(*iter);;
         levelStack.push_front(level);
     }
-    // pushStack(dfsStack, start);
     
 
-    // while (!isEmpty(dfsStack)) {
     while (dfsStack.size() > 0) {
-        // Node node = popStack(dfsStack);
         Node node = dfsStack.back();
         dfsStack.pop_back();
 
@@ -224,8 +190,6 @@ void printTree(HashTable hash, int count) {
 
         indentOutput(level);
         cout << node.name << endl;
-        // indentOutput(level);
-        // cout << "----> ";
 
         if (hash.getItem(node.id).size() <= 2)
             continue;
@@ -240,7 +204,6 @@ void printTree(HashTable hash, int count) {
 
         for (; iter != end; iter--) {
             levelStack.push_back(level+1);
-            // pushStack(dfsStack, *iter);
             dfsStack.push_back(*iter);
             
         }

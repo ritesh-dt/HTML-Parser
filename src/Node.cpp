@@ -19,7 +19,7 @@ class Node {
         string* attrs;
         // list<string> attrs;
         int attr_count;
-    
+
         Node (int type, string name) {
             type = type;
             name = name;
